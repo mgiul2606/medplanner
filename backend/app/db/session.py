@@ -1,0 +1,33 @@
+"""Database session management."""
+
+from typing import Generator
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
+
+from app.core.config import settings
+
+# Crea engine SQLAlchemy
+engine = create_engine(
+    settings.DATABASE_URL,
+    # SQLite richiede check_same_thread=False
+    connect_args={"check_same_thread": False} if "sqlite" in settings.DATABASE_URL else {},
+    pool_pre_ping=True,
+)
+
+# Session factory
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def get_db() -> Generator[Session, None, None]:
+    """
+    Dependency per ottenere database session.
+
+    Yields:
+        Database session
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
