@@ -1,0 +1,30 @@
+Generic single-database configuration for Alembic.
+
+Questo directory contiene le migrazioni del database.
+
+## Comandi Alembic
+
+Eseguire dalla directory `backend/`:
+
+```bash
+# Applica tutte le migrazioni
+alembic upgrade head
+
+# Crea nuova migrazione (autogenerata dai models)
+alembic revision --autogenerate -m "descrizione"
+
+# Rollback ultima migrazione
+alembic downgrade -1
+
+# Mostra history migrazioni
+alembic history
+
+# Mostra current revision
+alembic current
+```
+
+## Note
+
+- Le migrazioni vengono generate automaticamente da modifiche ai SQLAlchemy models
+- Controllare sempre le migrazioni autogenerate prima di applicarle
+- I file di migrazione sono in `migrations/versions/`
